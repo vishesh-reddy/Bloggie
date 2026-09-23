@@ -1,0 +1,1 @@
+const r=require('express').Router();const c=require('../controllers/adminController');const {auth,admin}=require('../middleware/auth');r.use(auth,admin);r.get('/stats',c.stats);r.get('/users',c.users);r.patch('/comments/:id',c.moderateComment);module.exports=r;
