@@ -1,0 +1,3 @@
+const test=require('node:test');const assert=require('node:assert/strict');const app=require('../backend/server');const http=require('http');
+function request(path){return new Promise((resolve,reject)=>{const s=http.createServer(app);s.listen(0,()=>{const p=s.address().port;http.get(`http://127.0.0.1:${p}${path}`,r=>{let d='';r.on('data',c=>d+=c);r.on('end',()=>{s.close();resolve({status:r.statusCode,body:d})})}).on('error',e=>{s.close();reject(e)})})})}
+test('health endpoint',async()=>{const r=await request('/api/health');assert.equal(r.status,200);assert.equal(JSON.parse(r.body).status,'ok')});
