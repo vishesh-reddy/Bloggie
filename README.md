@@ -61,3 +61,44 @@ Admin setup:
 ```sql
 UPDATE users SET role='admin' WHERE email='your-email@example.com';
 ```
+
+
+## System Architecture
+
+```mermaid
+flowchart LR
+    W[Writer / Reader / Admin] --> UI[Web UI HTML CSS JavaScript]
+    UI --> API[Express REST API]
+    API --> AUTH[JWT + bcrypt]
+    AUTH --> CTRL[Controllers]
+    CTRL --> DB[(MySQL)]
+    CTRL --> S[Posts / Categories / Tags]
+    CTRL --> C[Comments & Likes]
+    CTRL --> P[Profiles & Uploads]
+    CTRL --> ADM[Admin Tools]
+```
+
+## Publishing Workflow
+
+```mermaid
+flowchart TD
+    A[Create Story] --> B[Rich Text Editor]
+    B --> C{Save as}
+    C -->|Draft| D[Draft]
+    C -->|Publish| E[Published Post]
+    E --> F[Public Feed]
+    F --> G[Likes & Comments]
+    G --> H[Author Dashboard]
+```
+
+## User Roles
+
+```mermaid
+flowchart LR
+    R[Reader] --> F[Public Feed]
+    W[Writer] --> D[Dashboard]
+    W --> E[Editor]
+    E --> P[Publish / Draft]
+    A[Admin] --> M[Administration]
+    M --> U[User & Content Management]
+```
