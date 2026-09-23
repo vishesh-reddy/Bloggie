@@ -1,0 +1,5 @@
+const pool=require('../config/db');
+async function profile(req,res,next){try{const [r]=await pool.execute('SELECT id,name,email,bio,avatar_url,role,created_at FROM users WHERE id=?',[req.params.id]);if(!r.length)return res.status(404).json({message:'User not found'});const [posts]=await pool.execute(`SELECT id,title,slug,excerpt,cover_image,published_at FROM posts WHERE author_id=? AND status='published' ORDER BY published_at DESC`,[req.params.id]);res.json({user:r[0],posts})}catch(e){next(e)}}
+async function update(req,res,next){try{await pool.execute('UPDATE users SET name=?,bio=?,avatar_url=? WHERE id=?',[req.body.name?.trim()||req.user.name,req.body.bio||'',req.body.avatar_url||null,req.user.id]);res.json({message:'Profile updated'})}catch(e){next(e)}}
+async function uploadAvatar(req,res,next){try{if(!req.file)return res.status(400).json({message:'Image required'});const url='/uploads/'+req.file.filename;await pool.execute('UPDATE users SET avatar_url=? WHERE id=?',[url,req.user.id]);res.json({url})}catch(e){next(e)}}
+module.exports={profile,update,uploadAvatar};
