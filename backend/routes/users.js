@@ -1,0 +1,1 @@
+const r=require('express').Router();const c=require('../controllers/userController');const {auth}=require('../middleware/auth');const upload=require('../middleware/upload');r.get('/:id',c.profile);r.put('/me',auth,c.update);r.post('/me/avatar',auth,upload.single('avatar'),c.uploadAvatar);module.exports=r;
