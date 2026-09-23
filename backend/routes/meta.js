@@ -1,0 +1,1 @@
+const r=require('express').Router();const c=require('../controllers/metaController');const {auth}=require('../middleware/auth');r.get('/categories',c.categories);r.get('/tags',c.tags);r.post('/posts/:id/like',auth,c.like);r.delete('/posts/:id/like',auth,c.unlike);module.exports=r;
